@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shubham's Digital Space</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: #e0e0e0;
+  }
+
+  /* ── Header ── */
+  header {
+    text-align: center;
+    padding: 48px 24px 32px;
+  }
+  header h1 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #a78bfa, #60a5fa, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+  header p {
+    margin-top: 6px;
+    font-size: 0.95rem;
+    color: #9ca3af;
+  }
+
+  /* ── Main container ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
+  }
+
+  /* ── Section titles ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #a78bfa;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(167,139,250,0.4), transparent);
+  }
+
+  /* ── Tabs section ── */
+  .tabs-section { margin-bottom: 48px; }
+
+  .tabs-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .tab-pill {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 50px;
+    padding: 0;
+    transition: all 0.2s;
+    backdrop-filter: blur(8px);
+  }
+  .tab-pill:hover {
+    border-color: rgba(167,139,250,0.7);
+    background: rgba(167,139,250,0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(167,139,250,0.2);
+  }
+
+  .tab-link {
+    display: inline-block;
+    padding: 16px 32px;
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border-radius: 50px;
+    white-space: nowrap;
+    transition: color 0.2s;
+    letter-spacing: 0.2px;
+  }
+  .tab-link:hover { color: #a78bfa; }
+
+  .tab-actions {
+    display: flex;
+    gap: 4px;
+    padding-right: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .tab-pill:hover .tab-actions { opacity: 1; }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    padding: 6px 7px;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: color 0.2s, background 0.2s;
+    line-height: 1;
+  }
+  .tab-btn:hover { color: #a78bfa; background: rgba(167,139,250,0.15); }
+  .tab-btn.delete:hover { color: #f87171; background: rgba(248,113,113,0.15); }
+
+  /* Add tab button */
+  .add-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(167,139,250,0.12);
+    border: 1.5px dashed rgba(167,139,250,0.5);
+    border-radius: 50px;
+    padding: 16px 28px;
+    color: #a78bfa;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .add-tab-btn:hover {
+    background: rgba(167,139,250,0.22);
+    border-color: #a78bfa;
+  }
+
+  /* ── Table section ── */
+  .table-section {}
+
+  .table-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+  }
+
+  .add-row-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    border: none;
+    border-radius: 8px;
+    padding: 9px 18px;
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .add-row-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  .table-wrap {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 16px;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  thead th {
+    background: rgba(167,139,250,0.12);
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #a78bfa;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  thead th:last-child { text-align: center; width: 90px; }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.15s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,0.04); }
+
+  tbody td {
+    padding: 13px 16px;
+    font-size: 0.9rem;
+    vertical-align: middle;
+  }
+
+  .cell-name { font-weight: 600; color: #f0f0f0; }
+  .cell-link a {
+    color: #60a5fa;
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+  .cell-link a:hover { text-decoration: underline; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(167,139,250,0.18);
+    color: #c4b5fd;
+    border: 1px solid rgba(167,139,250,0.3);
+  }
+
+  .cell-desc { color: #9ca3af; font-size: 0.85rem; }
+
+  .cell-actions { text-align: center; }
+  .row-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 5px 6px;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: color 0.2s, background 0.2s;
+  }
+  .row-btn:hover { color: #a78bfa; background: rgba(167,139,250,0.15); }
+  .row-btn.delete:hover { color: #f87171; background: rgba(248,113,113,0.12); }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: linear-gradient(145deg, #1e1b4b, #1e1a3a);
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 20px;
+    padding: 32px;
+    width: 90%;
+    max-width: 480px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+  }
+  .modal h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #e0e0e0;
+    margin-bottom: 24px;
+  }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #9ca3af;
+    margin-bottom: 7px;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: #a78bfa;
+    background: rgba(167,139,250,0.08);
+  }
+  .form-group select option { background: #1e1b4b; color: #e0e0e0; }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 24px;
+  }
+  .btn-cancel {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 10px 20px;
+    color: #9ca3af;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-cancel:hover { background: rgba(255,255,255,0.12); color: #e0e0e0; }
+  .btn-save {
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 24px;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .btn-save:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* ── Filter bar ── */
+  .filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-search {
+    flex: 1;
+    min-width: 180px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 10px;
+    padding: 9px 14px 9px 36px;
+    color: #e0e0e0;
+    font-size: 0.88rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236b7280' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+  .filter-search:focus { border-color: #a78bfa; background-color: rgba(167,139,250,0.08); }
+  .filter-search::placeholder { color: #4b5563; }
+
+  .filter-select {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 10px;
+    padding: 9px 32px 9px 14px;
+    color: #e0e0e0;
+    font-size: 0.88rem;
+    font-family: inherit;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%236b7280' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    min-width: 140px;
+  }
+  .filter-select:focus { border-color: #a78bfa; }
+  .filter-select option { background: #1e1b4b; color: #e0e0e0; }
+
+  .filter-count {
+    font-size: 0.8rem;
+    color: #6b7280;
+    white-space: nowrap;
+    padding: 0 4px;
+  }
+
+  /* ── Empty state ── */
+  .empty-row td {
+    text-align: center;
+    color: #4b5563;
+    padding: 40px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading banner -->
+<div id="loadingBanner" style="display:none; align-items:center; justify-content:center; gap:10px; padding:10px 24px; background:rgba(167,139,250,0.1); border-bottom:1px solid rgba(167,139,250,0.2); font-size:0.85rem; color:#a78bfa;">
+  <span style="display:inline-block; width:14px; height:14px; border:2px solid #a78bfa; border-top-color:transparent; border-radius:50%; animation:spin 0.7s linear infinite;"></span>
+  Syncing with Google Sheets…
+</div>
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+
+<header>
+  <h1>✦ Shubham's Digital Space</h1>
+  <p>Your personal hub — quick access &amp; resource directory</p>
+</header>
+
+<div class="container">
+
+  <!-- TABS SECTION -->
+  <div class="tabs-section">
+    <div class="section-header">
+      <span class="section-title">Quick Links</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="tabs-wrapper" id="tabsWrapper">
+      <!-- tabs rendered by JS -->
+      <button class="add-tab-btn" onclick="openTabModal()">＋ Add Tab</button>
+    </div>
+  </div>
+
+  <!-- TABLE SECTION -->
+  <div class="table-section">
+    <div class="section-header">
+      <span class="section-title">Resource Directory</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="filter-bar">
+      <input class="filter-search" type="text" id="filterSearch" placeholder="Search by name or description…" oninput="applyFilters()">
+      <select class="filter-select" id="filterCat" onchange="applyFilters()">
+        <option value="">All Categories</option>
+      </select>
+      <span class="filter-count" id="filterCount"></span>
+    </div>
+    <div class="table-toolbar">
+      <button class="add-row-btn" onclick="openRowModal()">＋ Add Entry</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Link</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- rows rendered by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h2 id="modalTitle">Add Tab</h2>
+    <div id="modalFields"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveModal()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Google Sheets backend ──
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxWjXAM0izgU4kJLnybNdUYa_WXmouZaciYds40zDgBCXKKF0snFOhcT1F0Gui4qH_nGA/exec';
+
+async function sheetRead(sheet) {
+  try {
+    const res = await fetch(`${SHEET_URL}?action=read&sheet=${sheet}`);
+    return await res.json();
+  } catch (e) {
+    console.warn('Sheet read failed, using localStorage fallback', e);
+    return null;
+  }
+}
+
+async function sheetWrite(sheet, data) {
+  try {
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'text/plain' }, // Apps Script needs text/plain for no-cors
+    });
+  } catch (e) {
+    console.warn('Sheet write failed', e);
+  }
+  // Always mirror to localStorage as fallback
+  localStorage.setItem('sds_' + sheet, JSON.stringify(data));
+}
+
+// ── State ──
+let tabs = [];
+let rows = [];
+
+function uid() { return '_' + Math.random().toString(36).slice(2, 9); }
+
+async function save() {
+  await Promise.all([
+    sheetWrite('tabs', tabs),
+    sheetWrite('rows', rows),
+  ]);
+}
+
+// ── Show loading state ──
+function setLoading(on) {
+  const el = document.getElementById('loadingBanner');
+  if (el) el.style.display = on ? 'flex' : 'none';
+}
+
+// ── Boot: load from Sheets, fallback to localStorage ──
+async function boot() {
+  setLoading(true);
+  let sheetTabs = await sheetRead('tabs');
+  let sheetRows = await sheetRead('rows');
+
+  // Sheets returns [] for empty sheet — treat null as failure
+  tabs = (sheetTabs && sheetTabs.length) ? sheetTabs
+       : JSON.parse(localStorage.getItem('sds_tabs') || '[]');
+  rows = (sheetRows && sheetRows.length) ? sheetRows
+       : JSON.parse(localStorage.getItem('sds_rows') || '[]');
+
+  // Seed defaults only if truly empty everywhere
+  if (!tabs.length) {
+    tabs = [
+      { id: uid(), label: 'GitHub', url: 'https://github.com' },
+      { id: uid(), label: 'LinkedIn', url: 'https://linkedin.com' },
+      { id: uid(), label: 'Portfolio', url: 'https://example.com' },
+    ];
+  }
+  if (!rows.length) {
+    rows = [
+      { id: uid(), name: 'GitHub', url: 'https://github.com', category: 'Dev', desc: 'Code repositories and version control' },
+      { id: uid(), name: 'LinkedIn', url: 'https://linkedin.com', category: 'Social', desc: 'Professional networking' },
+      { id: uid(), name: 'Notion', url: 'https://notion.so', category: 'Productivity', desc: 'Notes, wikis and project management' },
+    ];
+  }
+
+  setLoading(false);
+  renderTabs();
+  renderTable();
+}
+
+// ── Render Tabs ──
+function renderTabs() {
+  const wrapper = document.getElementById('tabsWrapper');
+  const addBtn = wrapper.querySelector('.add-tab-btn');
+  // remove old pills
+  wrapper.querySelectorAll('.tab-pill').forEach(el => el.remove());
+
+  tabs.forEach((tab, i) => {
+    const pill = document.createElement('div');
+    pill.className = 'tab-pill';
+    pill.innerHTML = `
+      <a class="tab-link" href="${escHtml(tab.url)}" target="_blank" rel="noopener">${escHtml(tab.label)}</a>
+      <div class="tab-actions">
+        <button class="tab-btn" title="Edit" onclick="openTabModal(${i})">✎</button>
+        <button class="tab-btn delete" title="Delete" onclick="deleteTab(${i})">✕</button>
+      </div>`;
+    wrapper.insertBefore(pill, addBtn);
+  });
+}
+
+// ── Render Table ──
+function renderTable() {
+  updateCategoryDropdown();
+  applyFilters();
+}
+
+function updateCategoryDropdown() {
+  const sel = document.getElementById('filterCat');
+  const current = sel.value;
+  const cats = [...new Set(rows.map(r => r.category).filter(Boolean))].sort();
+  sel.innerHTML = '<option value="">All Categories</option>' +
+    cats.map(c => `<option value="${escHtml(c)}" ${current === c ? 'selected' : ''}>${escHtml(c)}</option>`).join('');
+}
+
+function applyFilters() {
+  const search = (document.getElementById('filterSearch')?.value || '').toLowerCase();
+  const cat    = document.getElementById('filterCat')?.value || '';
+  const tbody  = document.getElementById('tableBody');
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No entries yet — click "Add Entry" to start</td></tr>';
+    document.getElementById('filterCount').textContent = '';
+    return;
+  }
+
+  const filtered = rows.map((r, i) => ({ r, i })).filter(({ r }) => {
+    const matchSearch = !search ||
+      r.name.toLowerCase().includes(search) ||
+      (r.desc || '').toLowerCase().includes(search) ||
+      (r.url || '').toLowerCase().includes(search);
+    const matchCat = !cat || r.category === cat;
+    return matchSearch && matchCat;
+  });
+
+  const countEl = document.getElementById('filterCount');
+  countEl.textContent = (search || cat)
+    ? `${filtered.length} of ${rows.length} shown`
+    : '';
+
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No entries match filters</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(({ r, i }) => `
+    <tr>
+      <td class="cell-name">${escHtml(r.name)}</td>
+      <td class="cell-link"><a href="${escHtml(r.url)}" target="_blank" rel="noopener">${shortUrl(r.url)}</a></td>
+      <td><span class="badge">${escHtml(r.category || '—')}</span></td>
+      <td class="cell-desc">${escHtml(r.desc)}</td>
+      <td class="cell-actions">
+        <button class="row-btn" title="Edit" onclick="openRowModal(${i})">✎</button>
+        <button class="row-btn delete" title="Delete" onclick="deleteRow(${i})">✕</button>
+      </td>
+    </tr>`).join('');
+}
+
+function shortUrl(url) {
+  try { return new URL(url).hostname.replace('www.', ''); } catch { return url; }
+}
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Modal logic ──
+let modalMode = null; // 'tab-add' | 'tab-edit' | 'row-add' | 'row-edit'
+let modalIdx = null;
+
+function openTabModal(idx) {
+  modalIdx = (idx !== undefined) ? idx : null;
+  modalMode = (idx !== undefined) ? 'tab-edit' : 'tab-add';
+  const tab = (idx !== undefined) ? tabs[idx] : { label: '', url: '' };
+
+  document.getElementById('modalTitle').textContent = modalMode === 'tab-add' ? 'Add Quick Link' : 'Edit Quick Link';
+  document.getElementById('modalFields').innerHTML = `
+    <div class="form-group">
+      <label>Label</label>
+      <input type="text" id="f_label" placeholder="e.g. GitHub" value="${escHtml(tab.label)}">
+    </div>
+    <div class="form-group">
+      <label>URL</label>
+      <input type="url" id="f_url" placeholder="https://..." value="${escHtml(tab.url)}">
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('f_label').focus();
+}
+
+function openRowModal(idx) {
+  modalIdx = (idx !== undefined) ? idx : null;
+  modalMode = (idx !== undefined) ? 'row-edit' : 'row-add';
+  const r = (idx !== undefined) ? rows[idx] : { name: '', url: '', category: '', desc: '' };
+
+  document.getElementById('modalTitle').textContent = modalMode === 'row-add' ? 'Add Entry' : 'Edit Entry';
+  document.getElementById('modalFields').innerHTML = `
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" id="f_name" placeholder="e.g. GitHub" value="${escHtml(r.name)}">
+    </div>
+    <div class="form-group">
+      <label>Link / URL</label>
+      <input type="url" id="f_url" placeholder="https://..." value="${escHtml(r.url)}">
+    </div>
+    <div class="form-group">
+      <label>Category / Type</label>
+      <input type="text" id="f_cat" placeholder="e.g. Dev, Social, Finance..." value="${escHtml(r.category)}">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="f_desc" placeholder="Brief description...">${escHtml(r.desc)}</textarea>
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('f_name').focus();
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function saveModal() {
+  if (modalMode === 'tab-add' || modalMode === 'tab-edit') {
+    const label = document.getElementById('f_label').value.trim();
+    const url   = document.getElementById('f_url').value.trim();
+    if (!label || !url) { alert('Label and URL required.'); return; }
+    if (modalMode === 'tab-add') {
+      tabs.push({ id: uid(), label, url });
+    } else {
+      tabs[modalIdx] = { ...tabs[modalIdx], label, url };
+    }
+  } else {
+    const name = document.getElementById('f_name').value.trim();
+    const url  = document.getElementById('f_url').value.trim();
+    const cat  = document.getElementById('f_cat').value.trim();
+    const desc = document.getElementById('f_desc').value.trim();
+    if (!name) { alert('Name required.'); return; }
+    if (modalMode === 'row-add') {
+      rows.push({ id: uid(), name, url, category: cat, desc });
+    } else {
+      rows[modalIdx] = { ...rows[modalIdx], name, url, category: cat, desc };
+    }
+  }
+  save();
+  renderTabs();
+  renderTable();
+  closeModal();
+}
+
+function deleteTab(i) {
+  if (!confirm(`Delete tab "${tabs[i].label}"?`)) return;
+  tabs.splice(i, 1);
+  save(); renderTabs();
+}
+function deleteRow(i) {
+  if (!confirm(`Delete entry "${rows[i].name}"?`)) return;
+  rows.splice(i, 1);
+  save(); renderTable();
+}
+
+// Close modal on overlay click
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// Enter key submits modal
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Enter' && document.getElementById('modalOverlay').classList.contains('open')) {
+    if (e.target.tagName !== 'TEXTAREA') saveModal();
+  }
+});
+
+// ── Init ──
+boot();
+</script>
+</body>
+</html>
